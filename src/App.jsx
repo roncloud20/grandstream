@@ -4,6 +4,7 @@ import About from "./Pages/About";
 import { BrowserRouter, Routes, Route } from "react-router";
 import Contact from "./Pages/Contact";
 import Error404 from "./Pages/Error404";
+import Register from "./Pages/Register";
 
 class App extends Component {
   render() {
@@ -14,6 +15,7 @@ class App extends Component {
             <Route path="/" element={<Home />} />
             <Route path="/about" element={<About />} />
             <Route path="/contact" element={<Contact/>} />
+            <Route path="/register" element={<Register />} />
             <Route path="*" element={<Error404/>} />
           </Routes>
         </BrowserRouter>
