@@ -1,4 +1,4 @@
-import React from "react";
+import logo from '../assets/grandsteam.png';
 import { Link } from "react-router";
 
 export default function Header() {
@@ -10,12 +10,12 @@ export default function Header() {
           <div className="flex flex-wrap justify-between items-center mx-auto">
             <a href="https://flowbite.com" className="flex items-center">
               <img
-                src="https://flowbite.com/docs/images/logo.svg"
+                src={logo}
                 className="mr-3 h-6 sm:h-9"
                 alt="Flowbite Logo"
               />
               <span className="self-center text-xl font-semibold whitespace-nowrap dark:text-white">
-                Flowbite
+                Grand Steam
               </span>
             </a>
             <div className="flex items-center lg:order-2">
