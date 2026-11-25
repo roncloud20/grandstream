@@ -4,12 +4,67 @@ import { EyeIcon, EyeOffIcon } from "lucide-react";
 import { useState } from "react";
 
 export default function Register() {
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
+  const [formData, setFormData] = useState({
+    firstname: "",
+    surname: "",
+    email: "",
+    password: "",
+    confirmpassword: "",
+  });
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const [fnError, setfnError] = useState("");
+  const [snError, setsnError] = useState("");
+  const [emailError, setEmailError] = useState("");
+  const [passwordError, setPasswordError] = useState("");
+  const [confirmPasswordError, setConfirmPasswordError] = useState("");
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (formData.firstname.trim() == "") {
+      setfnError("Firstname is required");
+    } else {
+        setfnError('');
+    }
+    if (formData.surname.trim() == "") {
+      setsnError("Surname is required");
+    } else {
+        setsnError('');
+    }
+    if (formData.email.trim() == "") {
+      setEmailError("Email is required");
+    } else {
+        setEmailError('');
+    }
+    if (formData.password.trim() == "") {
+      setPasswordError("Password is required");
+    } else if (formData.password != formData.confirmpassword) {
+        setPasswordError("Password don't match");
+    } else {
+        setPasswordError('')
+    }
+    if (formData.confirmpassword.trim() == "") {
+      setConfirmPasswordError("Confirm Password is required");
+    } else if (formData.password != formData.confirmpassword) {
+        setConfirmPasswordError("Password don't match");
+    } else {
+        setConfirmPasswordError('');
+    }
+  };
+
   return (
     <>
       <Header />
 
-      <section className="bg-gray-50 dark:bg-gray-900">
-        <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
+      <section className="bg-gray-50 dark:bg-gray-900 mt-5">
+        <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0 ">
           <a
             href="#"
             className="flex items-center mb-6 text-2xl font-semibold text-gray-900 dark:text-white"
@@ -35,9 +90,12 @@ export default function Register() {
                     type="firstname"
                     name="firstname"
                     id="firstname"
-                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     placeholder="John"
+                    onChange={handleChange}
+                    className={`bg-gray-50 border  text-gray-900 text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 ${fnError === "" ? "border-gray-300" : "border-red-300"}`}
                   />
+
+                  <span className="text-red-600">{fnError}</span>
                 </div>
 
                 {/* Surname */}
@@ -52,11 +110,14 @@ export default function Register() {
                     type="surname"
                     name="surname"
                     id="surname"
-                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     placeholder="Doe"
+                    onChange={handleChange}
+                    className={`bg-gray-50 border  text-gray-900 text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 ${snError === "" ? "border-gray-300" : "border-red-300"}`}
                   />
+
+                  <span className="text-red-600">{snError}</span>
                 </div>
-                
+
                 {/* Email Address */}
                 <div>
                   <label
@@ -69,9 +130,12 @@ export default function Register() {
                     type="email"
                     name="email"
                     id="email"
-                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     placeholder="name@company.com"
+                    onChange={handleChange}
+                    className={`bg-gray-50 border  text-gray-900 text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 ${emailError === "" ? "border-gray-300" : "border-red-300"}`}
                   />
+
+                  <span className="text-red-600">{emailError}</span>
                 </div>
 
                 {/* Password */}
@@ -83,34 +147,57 @@ export default function Register() {
                     Password
                   </label>
                   <input
-                    type="password"
+                    type={showPassword ? "text" : "password"}
                     name="password"
                     id="password"
                     placeholder="••••••••"
-                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    onChange={handleChange}
+                    className={`bg-gray-50 border  text-gray-900 text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 ${passwordError === "" ? "border-gray-300" : "border-red-300"}`}
                   />
-                  <span className="absolute right-2 top-10 w-5 h-5">
-                    {/* <EyeIcon size={15} /> */}
-                    <EyeOffIcon size={15} />
+
+                  <span className="text-red-600">{passwordError}</span>
+                  <span
+                    className="absolute right-2 top-10 w-5 h-5"
+                    onClick={(e) => setShowPassword(!showPassword)}
+                  >
+                    {showPassword ? (
+                      <EyeOffIcon size={15} />
+                    ) : (
+                      <EyeIcon size={15} />
+                    )}
                   </span>
                 </div>
 
                 {/* Confirm Password */}
-                <div>
+                <div className="relative">
                   <label
-                    for="confirm-password"
+                    for="confirmpassword"
                     className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                   >
-                    Confirm password
+                    Confirm Password
                   </label>
                   <input
-                    type="confirm-password"
-                    name="confirm-password"
-                    id="confirm-password"
+                    type={showConfirmPassword ? "text" : "password"}
+                    name="confirmpassword"
+                    id="confirmpassword"
                     placeholder="••••••••"
-                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    required=""
+                    onChange={handleChange}
+                    className={`bg-gray-50 border  text-gray-900 text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 ${confirmPasswordError === "" ? "border-gray-300" : "border-red-300"}`}
                   />
+
+                  <span className="text-red-600">{confirmPasswordError}</span>
+                  <span
+                    className="absolute right-2 top-10 w-5 h-5"
+                    onClick={(e) =>
+                      setShowConfirmPassword(!showConfirmPassword)
+                    }
+                  >
+                    {showConfirmPassword ? (
+                      <EyeOffIcon size={15} />
+                    ) : (
+                      <EyeIcon size={15} />
+                    )}
+                  </span>
                 </div>
 
                 {/* Term & Condition */}
@@ -143,6 +230,7 @@ export default function Register() {
                 {/* Register Button */}
                 <button
                   type="submit"
+                  onClick={handleSubmit}
                   className="w-full text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
                 >
                   Create an account
